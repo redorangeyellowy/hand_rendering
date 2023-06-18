@@ -4,7 +4,7 @@
 
 ### Freihand
 
-[Images](https://lmb.informatik.uni-freiburg.de/data/freihand/FreiHAND_pub_v2.zip)
+[Images](https://lmb.informatik.uni-freiburg.de/resources/datasets/FreihandDataset.en.html)
 
 [Annotations](https://drive.google.com/drive/folders/13qR8EhHFgvJ_AjgHz-JZKQQzYJX7oLpE?usp=sharing)
 
