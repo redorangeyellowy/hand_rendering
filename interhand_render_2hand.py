@@ -99,16 +99,19 @@ for img_path in tqdm(img_path_list):
     save_file = os.path.join(save_folder, img_path.split('/')[-1])
     
     prev_depth = None
+    mano_param = None
     for hand_type in ('right', 'left'):
         # get mesh coordinate
         try:
             mano_param = mano_params[capture_idx][frame_idx][hand_type]
             if mano_param is None:
-                continue
+                img_zero = np.zeros((img_height, img_width, 1))
+                cv2.imwrite(save_file, img_zero)
+                break
         except KeyError:
             img_zero = np.zeros((img_height, img_width, 1))
             cv2.imwrite(save_file, img_zero)
-            break # or conitnue
+            break
         
         # get MANO 3D mesh coordinates (world coordinate)
         mano_pose = torch.FloatTensor(mano_param['pose']).view(-1,3)
@@ -131,13 +134,8 @@ for img_path in tqdm(img_path_list):
             rgb, img, prev_depth = render(mesh, face, focal, princpt, img, prev_depth)
         elif hand_type == 'left':
             rgb, img, prev_depth = render(mesh, face, focal, princpt, rgb, prev_depth)
-        
-        #cv2.imwrite('test_origin.png', cv2.imread(img_path))
+
+    if mano_param:
+        cv2.imwrite(save_file, img)
         #cv2.imwrite('test_render_img.png', img)
-        #cv2.imwrite('test_render_rgb.png', rgb)
-        #rgb_2hand += rgb
-    cv2.imwrite(save_file, img)
-    # test
-    #cv2.imwrite('test_origin.png', cv2.imread(img_path))
-    #cv2.imwrite('test_render_img.png', img)
-    #cv2.imwrite('test_render_rgb.png', rgb)
+        #cv2.imwrite('test_origin.png', cv2.imread(img_path))
